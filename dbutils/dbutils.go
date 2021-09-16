@@ -15,14 +15,14 @@ func DbSaveEntity(db fdb.Database, t tuple.Tuple, buffer *bytes.Buffer) (interfa
 	})
 }
 
-func DbFetchEntity(db fdb.Database, layer string, id string) (interface{}, error) {
+func DbFetchEntity(db fdb.Database, t tuple.Tuple) (interface{}, error) {
 	return db.Transact(func(tr fdb.Transaction) (interface{}, error) {
-		ret, err := tr.Get(tuple.Tuple{layer, id}).Get()
+		ret, err := tr.Get(t).Get()
 		if err != nil {
 			return nil, err
 		}
 		if ret == nil {
-			return nil, fmt.Errorf("%s not found", layer)
+			return nil, fmt.Errorf("entity not found")
 		}
 		return ret, err
 	})
