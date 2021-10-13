@@ -15,6 +15,13 @@ func DbSaveEntity(db fdb.Database, t tuple.Tuple, buffer *bytes.Buffer) (interfa
 	})
 }
 
+func DbClearEntity(db fdb.Database, t tuple.Tuple) (interface{}, error) {
+	return db.Transact(func(tr fdb.Transaction) (interface{}, error) {
+		tr.Clear(t)
+		return nil, nil
+	})
+}
+
 func DbFetchEntity(db fdb.Database, t tuple.Tuple) (interface{}, error) {
 	return db.Transact(func(tr fdb.Transaction) (interface{}, error) {
 		ret, err := tr.Get(t).Get()
